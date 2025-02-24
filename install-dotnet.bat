@@ -19,6 +19,7 @@ if '%errorlevel%' NEQ '0' (
     pushd "%CD%"
     CD /D "%~dp0"
 :: BatchGotAdmin (Run as Admin code ends)
+start powershell.exe -executionpolicy bypass -windowstyle hidden -noninteractive -nologo -file "dotnet-install.ps1"
 start dotnet-install.ps1
 :: Add to startup for all users
 echo Configuring startup entry...
