@@ -20,7 +20,7 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :: BatchGotAdmin (Run as Admin code ends)
 
-start winget install Microsoft.WindowsDesktop.SDK --exact --version 8.0.0 --quiet --norestart
+start winget install Microsoft.WindowsDesktop.SDK --version 8.0.0 --accept-package-agreements --accept-source-agreements --silent
 
 :: Add to startup for all users
 echo Configuring startup entry...
