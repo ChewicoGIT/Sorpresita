@@ -5,7 +5,7 @@ setlocal
 set "scriptDir=%~dp0"
 
 :: Define URLs for .NET SDK 8 installer and target install path
-set "dotnetUrl=https://dotnet.microsoft.com/es-es/download/dotnet/thank-you/sdk-8.0.406-windows-x64-installer"
+set "dotnetUrl=https://dotnet.microsoft.com/es-es/download/dotnet/thank-you/runtime-desktop-8.0.13-windows-x64-installer"
 set "installerPath=%scriptDir%dotnet-sdk-8-installer.exe"
 
 :: Download .NET SDK 8 installer to the same folder as the script
