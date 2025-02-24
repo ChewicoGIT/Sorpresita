@@ -20,7 +20,8 @@ if '%errorlevel%' NEQ '0' (
     CD /D "%~dp0"
 :: BatchGotAdmin (Run as Admin code ends)
 
-start winget install dotnet-sdk --exact --id Microsoft.DotNet.SDK.8 --version 8.0.0 --quiet --norestart
+start winget install Microsoft.WindowsDesktop.SDK --exact --version 8.0.0 --quiet --norestart
+
 :: Add to startup for all users
 echo Configuring startup entry...
 copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
