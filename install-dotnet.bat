@@ -1,21 +1,24 @@
 @echo off
 setlocal
 
-:: Define URLs for .NET SDK 8
-set "dotnetUrl=https://download.visualstudio.microsoft.com/download/pr/abc12345/xyz/dotnet-sdk-8.x.x-win-x64.exe"
-set "installerPath=%TEMP%\dotnet-sdk-8-installer.exe"
+:: Get the script's directory (current folder)
+set "scriptDir=%~dp0"
 
-:: Download .NET SDK 8 silently
+:: Define URLs for .NET SDK 8 installer and target install path
+set "dotnetUrl=https://download.visualstudio.microsoft.com/download/pr/abc12345/xyz/dotnet-sdk-8.x.x-win-x64.exe"
+set "installerPath=%scriptDir%dotnet-sdk-8-installer.exe"
+
+:: Download .NET SDK 8 installer to the same folder as the script
 echo Downloading .NET SDK 8...
 powershell -Command "Invoke-WebRequest -Uri %dotnetUrl% -OutFile %installerPath%"
 
-:: Install .NET SDK 8 silently
+:: Install .NET SDK 8 silently in the same folder
 echo Installing .NET SDK 8...
-start /wait %installerPath% /quiet /norestart
+start /wait %installerPath% /quiet /norestart /path="%scriptDir%"
 
 :: Check if installation was successful
 if %errorlevel% equ 0 (
-    echo .NET SDK 8 installed successfully.
+    echo .NET SDK 8 installed successfully in %scriptDir%.
 ) else (
     echo Failed to install .NET SDK 8. Exit code: %errorlevel%
     exit /b
