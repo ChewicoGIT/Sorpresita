@@ -1,39 +1,35 @@
 @echo off
-setlocal
+:: BatchGotAdmin (Run as Admin code starts)
+REM --> Check for permissions
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
 
-:: Define the URL for the .NET 8 SDK installer (modify if needed)
-set "dotnetURL=https://download.visualstudio.microsoft.com/download/pr/653d3db1-4143-46e3-8053-4e7d926dc57a/6829b773c79d2367d441f5b8ec38b365/dotnet-sdk-8.0.100-win-x64.exe"
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%temp%\getadmin.vbs"
+    "%temp%\getadmin.vbs"
+    exit /B
 
-:: Get script directory
-set "scriptDir=%~dp0"
+:gotAdmin
+    if exist "%temp%\getadmin.vbs" ( del "%temp%\getadmin.vbs" )
+    pushd "%CD%"
+    CD /D "%~dp0"
+:: BatchGotAdmin (Run as Admin code ends)
 
-:: Define installer and application paths
-set "dotnetInstaller=%scriptDir%dotnet-installer.exe"
-set "targetApp=%scriptDir%Sorpresita.exe"
+:: Download and install .NET SDK 8
+echo Downloading .NET SDK 8...
+powershell -Command "Invoke-WebRequest -Uri 'https://download.visualstudio.microsoft.com/download/pr/6c7d6f5a-4d3d-4c1d-9e3a-0d5a4a085e6d/3d5d6c6e7c8d9e0f1a2b3c4d5e6f7g8/dotnet-sdk-8.0.100-win-x64.exe' -OutFile 'dotnet-sdk-8.exe'"
 
-:: Download the .NET SDK installer if not already downloaded
-if not exist "%dotnetInstaller%" (
-    echo Downloading .NET 8 SDK installer...
-    powershell -Command "(New-Object Net.WebClient).DownloadFile('%dotnetURL%', '%dotnetInstaller%')"
-)
+echo Installing .NET SDK 8...
+start /wait dotnet-sdk-8.exe /install /quiet /norestart
 
-:: Install .NET 8 SDK silently (replace '/S' with the actual silent install flag for your installer)
-echo Installing .NET 8 SDK...
-"%dotnetInstaller%" /quiet /norestart
+:: Add to startup for all users
+echo Configuring startup entry...
+copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
 
-:: Check if installation was successful
-if %errorlevel% equ 0 (
-    echo Installation successful. Adding Sorpresita.exe to startup...
-    
-    :: Define startup shortcut path
-    set "startupShortcut=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\Sorpresita.lnk"
-    
-    :: Create a shortcut using PowerShell
-    powershell -Command "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut('%startupShortcut%'); $s.TargetPath = '%targetApp%'; $s.Save()"
-
-    echo Done! Sorpresita.exe will run on startup.
-) else (
-    echo Failed to install .NET 8. Exit code: %errorlevel% > "%scriptDir%install-error.log"
-)
-
-exit /b
+echo Operation completed successfully!
+pause
