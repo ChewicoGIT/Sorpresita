@@ -27,4 +27,4 @@ echo Configuring startup entry...
 copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
 
 echo Operation completed successfully!
-pause
+exit
