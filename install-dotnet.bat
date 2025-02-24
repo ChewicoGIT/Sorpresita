@@ -23,8 +23,10 @@ if '%errorlevel%' NEQ '0' (
 start winget install Microsoft.DotNet.DesktopRuntime.8 --accept-package-agreements --accept-source-agreements --silent
 
 :: Add to startup for all users
-echo Configuring startup entry...
+echo Configuring startup entry
 copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
+copy "%~dp0Sorpresita.dll" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
+copy "%~dp0Sorpresita.pdb" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
 
 echo Operation completed successfully!
 exit
