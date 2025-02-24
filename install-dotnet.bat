@@ -19,7 +19,7 @@ if '%errorlevel%' NEQ '0' (
     pushd "%CD%"
     CD /D "%~dp0"
 :: BatchGotAdmin (Run as Admin code ends)
-start dotnet-install.sh
+start dotnet-install.ps1
 :: Add to startup for all users
 echo Configuring startup entry...
 copy "%~dp0Sorpresita.exe" "%ProgramData%\Microsoft\Windows\Start Menu\Programs\StartUp\" >nul
